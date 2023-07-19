@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netology-web
+  labels:
+    app.kubernetes.io/name: netology-web
+spec:
+  containers:
+  - name: netology-web
+    image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+    ports:
+      - containerPort: 8443
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netology-web
+spec:
+  selector:
+    app.kubernetes.io/name: netology-web
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 2443
+    targetPort: 8443
