@@ -23,7 +23,7 @@ spec:
       initContainers:
       - name: delay
         image: busybox
-        command: ['sh', '-c', 'until nslookup nginx-service2.default.svc.cluster.local; do echo waiting for netology-svc-for-init; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup nginx-service2.default.svc.cluster.local; do echo waiting for nginx-service2; sleep 2; done;']
 
 ---
 apiVersion: v1
