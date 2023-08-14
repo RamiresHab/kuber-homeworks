@@ -14,7 +14,7 @@
 
 ### Ответ:
 
-Ссылка на файл деплоймента: 
+Ссылка на файл деплоймента: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.4/deployment-1.4.yaml
 
 Скриншот вывода команды kubectl --context docker-desktop apply -f deployment-1.4.yaml
 ![Alt text](image.png)
@@ -42,7 +42,7 @@
 
 ### Ответ:
 
-Ссылка на файл сервиса: 
+Ссылка на файл сервиса: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.4/service-nodeport.yaml
 
 Скриншот вывода команды kubectl --context docker-desktop apply -f service-nodeport.yaml 
 ![Alt text](image-6.png)
