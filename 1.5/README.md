@@ -14,13 +14,13 @@
 
 ### Ответ:
 
-Ссылка на деплоймент фронтэнда:
+Ссылка на деплоймент фронтэнда: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.5/deployment-frontend.yaml
 
-Ссылка на деплоймент бэкэнда:
+Ссылка на деплоймент бэкэнда: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.5/deployment-backend.yaml
 
-Ссылка на сервис фронтэнда:
+Ссылка на сервис фронтэнда: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.5/service-frontend.yaml
 
-Ссылка на сервис бэкэнда:
+Ссылка на сервис бэкэнда: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.5/service-backend.yaml
 
 Скриншот вывода kubectl apply для деплойментов и сервисов
 ![Alt text](image.png)
@@ -44,7 +44,7 @@
 
 ### Ответ:
 
-Ссылка на ингресс:
+Ссылка на ингресс: https://github.com/RamiresHab/kuber-homeworks/blob/main/1.5/ingress.yaml
 
 Скриншот включения ingress контроллера через helm
 ![Alt text](image-3.png)
