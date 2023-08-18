@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemonset21
+  labels:
+    app: daemonset21
+spec:
+  selector:
+    matchLabels:
+      app: daemonset21
+  template:
+    metadata:
+      labels:
+        app: daemonset21
+    spec:
+      containers:
+      - name: network-multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+        volumeMounts:
+        - name: vol
+          mountPath: /logs
+          readOnly: true
+      volumes:
+        - name: vol
+          hostPath:
+            path: /var/log/pods/kube-system_coredns-5d78c9869d-zx9x2_5ccc715b-07c2-43b9-a137-67113b4d6dc0/coredns/20.log
