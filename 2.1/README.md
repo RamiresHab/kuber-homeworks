@@ -18,7 +18,7 @@
 
 ### Ответ
 
-Файл с деплойментом приложения:
+Файл с деплойментом приложения: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.1/deployment-2.1.yaml
 
 Busibox контейнер запускается с аргументами, поэтому он пишет в общий volume каждые пять секунд.
 
@@ -54,7 +54,7 @@ Multitool контейнер имеет доступ до этого файла,
 
 ### Ответ
 
-Ссылка на daemonset приложения:
+Ссылка на daemonset приложения: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.1/daemonset-2.1.yaml
 
 На моей ноде /var/log/syslog это пустой каталог, а не файл, поэтому я примонтировал другой файл
 ![Alt text](image-1.png)
