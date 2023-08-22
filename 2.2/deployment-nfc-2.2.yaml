@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment22
+  labels:
+    app: deployment22
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment22
+  template:
+    metadata:
+      labels:
+        app: deployment22
+    spec:
+      containers:
+      - name:  busybox
+        image:  busybox:latest
+        command: ["/bin/sh", "-c"]
+        args: ['while sleep 5; do echo "test" >> /input/file.txt; done']
+        volumeMounts:
+          - name: nfs-storage
+            mountPath: /data
+      - name: network-multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+        volumeMounts:
+          - name: nfs-storage
+            mountPath: /data
+      volumes:
+        - name: nfs-storage
+          persistentVolumeClaim:
+            claimName: pvc-for-nfs
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-for-nfs
+spec:
+  storageClassName: nfs-csi
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 192.168.111.7
+  share: /srv/nfs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  - nfsvers=4.1

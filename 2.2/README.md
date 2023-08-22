@@ -1,26 +1,5 @@
 # Домашнее задание к занятию «Хранение в K8s. Часть 2»
 
-### Цель задания
-
-В тестовой среде Kubernetes нужно создать PV и продемострировать запись и хранение файлов.
-
-------
-
-### Чеклист готовности к домашнему заданию
-
-1. Установленное K8s-решение (например, MicroK8S).
-2. Установленный локальный kubectl.
-3. Редактор YAML-файлов с подключенным GitHub-репозиторием.
-
-------
-
-### Дополнительные материалы для выполнения задания
-
-1. [Инструкция по установке NFS в MicroK8S](https://microk8s.io/docs/nfs). 
-2. [Описание Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). 
-3. [Описание динамического провижининга](https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/). 
-4. [Описание Multitool](https://github.com/wbitt/Network-MultiTool).
-
 ------
 
 ### Задание 1
@@ -35,6 +14,21 @@
 4. Удалить Deployment и PVC. Продемонстрировать, что после этого произошло с PV. Пояснить, почему.
 5. Продемонстрировать, что файл сохранился на локальном диске ноды. Удалить PV.  Продемонстрировать что произошло с файлом после удаления PV. Пояснить, почему.
 5. Предоставить манифесты, а также скриншоты или вывод необходимых команд.
+
+------
+
+### Решение
+
+Файл с деплойментом приложения, PV и PVC: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.2/deployment-2.2.yaml
+
+Результат выполнения команды "kubectl apply -f deployment-2.2.yaml"
+![Alt text](image.png)
+
+Чтение файла из контейнера multitool
+![Alt text](image-1.png)
+
+Мы удалили deployment и PVC, но PV остался в статусе Released из-за persistentVolumeReclaimPolicy: Retain в манифесте PV.
+![Alt text](image-2.png)
 
 ------
 

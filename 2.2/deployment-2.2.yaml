@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment22
+  labels:
+    app: deployment22
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment22
+  template:
+    metadata:
+      labels:
+        app: deployment22
+    spec:
+      containers:
+      - name:  busybox
+        image:  busybox:latest
+        command: ["/bin/sh", "-c"]
+        args: ['while sleep 5; do echo "test" >> /vol-data/file.txt; done']
+        volumeMounts:
+          - name: local-storage
+            mountPath: /vol-data
+      - name: network-multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+        volumeMounts:
+          - name: local-storage
+            mountPath: /vol-data
+      volumes:
+        - name: local-storage
+          persistentVolumeClaim:
+            claimName: local-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+  namespace: default
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local
+  hostPath:
+    path: /vol-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local
+  resources:
+    requests:
+      storage: 100Mi
