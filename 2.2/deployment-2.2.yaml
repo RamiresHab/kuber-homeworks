@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment22
+  namespace: default
   labels:
     app: deployment22
 spec:
@@ -14,14 +15,18 @@ spec:
       labels:
         app: deployment22
     spec:
+      volumes:
+        - name: my-storage
+          persistentVolumeClaim:
+            claimName: local-pvc
       containers:
       - name:  busybox
         image:  busybox:latest
         command: ["/bin/sh", "-c"]
-        args: ['while sleep 5; do echo "test" >> /vol-data/file.txt; done']
+        args: ['while sleep 5; do echo "test" >> /data/file.txt; done']
         volumeMounts:
-          - name: local-storage
-            mountPath: /vol-data
+          - name: my-storage
+            mountPath: /data
       - name: network-multitool
         image: wbitt/network-multitool
         env:
@@ -30,12 +35,8 @@ spec:
         - name: HTTPS_PORT
           value: "11443"
         volumeMounts:
-          - name: local-storage
-            mountPath: /vol-data
-      volumes:
-        - name: local-storage
-          persistentVolumeClaim:
-            claimName: local-pvc
+          - name: my-storage
+            mountPath: /data
 
 ---
 apiVersion: v1
@@ -46,12 +47,13 @@ metadata:
 spec:
   capacity:
     storage: 100Mi
+  volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local
+  storageClassName: local-storage
   hostPath:
-    path: /vol-data
+    path: /tmp/data/
 
 ---
 apiVersion: v1
@@ -62,7 +64,15 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local
+  storageClassName: local-storage
   resources:
     requests:
       storage: 100Mi
+
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer

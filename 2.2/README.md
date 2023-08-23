@@ -19,7 +19,7 @@
 
 ### Решение
 
-Файл с деплойментом приложения, PV и PVC: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.2/deployment-2.2.yaml
+Файл с деплойментом приложения, StorageClass, PV и PVC: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.2/deployment-2.2.yaml
 
 Результат выполнения команды "kubectl apply -f deployment-2.2.yaml"
 ![Alt text](image.png)
@@ -29,6 +29,10 @@
 
 Мы удалили deployment и PVC, но PV остался в статусе Released из-за persistentVolumeReclaimPolicy: Retain в манифесте PV.
 ![Alt text](image-2.png)
+
+Файл сохранился на ноде
+![Alt text](image-3.png)
+
 
 ------
 
@@ -44,6 +48,24 @@
 4. Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 
 ------
+
+### Решение
+
+------
+
+Файл с деплойментом приложения, PV и PVC: https://github.com/RamiresHab/kuber-homeworks/blob/main/2.2/deployment-nfc-2.2.yaml
+
+Сервер включен
+![Alt text](image-4.png)
+![Alt text](image-6.png)
+![Alt text](image-5.png)
+
+Возможность чтения и записи изнутри пода (запись идёт контейнером busybox каждые пять секунд):
+![Alt text](image-7.png)
+
+Файл существует на ноде:
+
+![Alt text](image-8.png)
 
 ### Правила приёма работы
 

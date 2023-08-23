@@ -18,9 +18,9 @@ spec:
       - name:  busybox
         image:  busybox:latest
         command: ["/bin/sh", "-c"]
-        args: ['while sleep 5; do echo "test" >> /input/file.txt; done']
+        args: ['while sleep 5; do echo "test" >> /data/file.txt; done']
         volumeMounts:
-          - name: nfs-storage
+          - name: nfs-volume
             mountPath: /data
       - name: network-multitool
         image: wbitt/network-multitool
@@ -30,36 +30,39 @@ spec:
         - name: HTTPS_PORT
           value: "11443"
         volumeMounts:
-          - name: nfs-storage
+          - name: nfs-volume
             mountPath: /data
       volumes:
-        - name: nfs-storage
+        - name: nfs-volume
           persistentVolumeClaim:
-            claimName: pvc-for-nfs
+            claimName: pvcnfs
 
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: pvc-for-nfs
+  name: pvnfs
 spec:
-  storageClassName: nfs-csi
-  accessModes: [ReadWriteOnce]
-  resources:
-    requests:
-      storage: 5Gi
+  storageClassName: nfs
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /nfs
+    server: localhost
 
 ---
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
+kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
-  name: nfs-csi
-provisioner: nfs.csi.k8s.io
-parameters:
-  server: 192.168.111.7
-  share: /srv/nfs
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
-mountOptions:
-  - hard
-  - nfsvers=4.1
+  name: pvcnfs
+spec:
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvnfs
