@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-nginx
+  labels:
+    app: dep-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-nginx
+  template:
+    metadata:
+      labels:
+        app: dep-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - name: html-content
+              mountPath: /usr/share/nginx/html
+            - name: configmap-localhost-nginx
+              mountPath: /etc/nginx/conf.d
+            - name: tls-secret
+              mountPath: "/etc/nginx/ssl"
+              readOnly: true
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+      volumes:
+        - name: html-content
+          configMap:
+            name: html-content
+        - name: configmap-localhost-nginx
+          configMap:
+            name: configmap-localhost-nginx
+        - name: tls-secret
+          secret:
+            secretName: tls-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-nginx
+spec:
+  selector:
+    app: dep-nginx
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+  type: NodePort
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+      - localhost-nginx
+    secretName: tls-secret
+  rules:
+  - host: localhost-nginx
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-nginx
+            port:
+              name: https
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: html-content
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Homework 2.3</title>
+      </head>
+      <body>
+        <h1>Simple page for NGINX</h1>
+      </body>
+    </html>

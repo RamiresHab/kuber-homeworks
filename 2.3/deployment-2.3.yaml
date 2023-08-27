@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment23
+  namespace: default
+  labels:
+    app: deployment23
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment23
+  template:
+    metadata:
+      labels:
+        app: deployment23
+    spec:
+      containers:
+      - name:  busybox
+        image:  busybox:latest
+        command: ["/bin/sh", "-c"]
+        args: ['while sleep 5; do echo "test" >> /data/file.txt; done']
+      - name: network-multitool
+        image: wbitt/network-multitool
+        env:
+          - name: HTTP_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: configmap-multitool
+                key: HTTP_PORT
+          - name: HTTPS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: configmap-multitool
+                key: HTTPS_PORT

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-multitool
+data:
+  HTTP_PORT: "8080"
+  HTTPS_PORT: "11443"
