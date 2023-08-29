@@ -20,6 +20,16 @@
 
 ### Решение
 
+Файл с деплойментами: https://github.com/RamiresHab/kuber-homeworks/blob/main/3.3/deployment.yml
+
+Файл с сервисами: https://github.com/RamiresHab/kuber-homeworks/blob/main/3.3/service.yml
+
+Файл с манифестом неймспейса: https://github.com/RamiresHab/kuber-homeworks/blob/main/3.3/namespace.yml
+
+Файл с network policies: https://github.com/RamiresHab/kuber-homeworks/blob/main/3.3/np.yml
+
+Файл с манифестом ingress-deny-all: https://github.com/RamiresHab/kuber-homeworks/blob/main/3.3/ingress-deny-all.yml
+
 Подготовим кластер
 ![Alt text](image.png)
 
